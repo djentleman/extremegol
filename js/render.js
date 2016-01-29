@@ -4,6 +4,15 @@ var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeigh
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth - 10, window.innerHeight - 10);
 document.body.appendChild(renderer.domElement);
+var iter = 1;
+
+var delay = 100;
+
+var p = 2; // dimension count;
+
+var dim = 20; // size of grid
+
+var sizeOfBox = 0.8;
 
 var setGrid = function() {
 	// loop over 3d grid, set cubes
@@ -23,38 +32,55 @@ var setGrid = function() {
 	}
 };
 
+var cleanup = function() {
+	for( var i = scene.children.length - 1; i >= 0; i--) { 
+		obj = scene.children[i];
+		scene.remove(obj);
+	}
+};
+
 var render = function () {
-	requestAnimationFrame(render);
-	// handle keybaord events
-	if (keyboard.pressed("w")){
-		camera.position.z -= 0.1;
-	}
-	if (keyboard.pressed("s")){
-		camera.position.z += 0.1
-	}
+	window.setTimeout( function() {
+		requestAnimationFrame(render);
+	}, delay);
+	
+
+	if (iter) {
+		cleanup();
+
+		// handle keybaord events
+		if (keyboard.pressed("w")){
+			camera.position.z -= 0.5;
+		}
+		if (keyboard.pressed("s")){
+			camera.position.z += 0.5;
+		}
 
 
-	if (keyboard.pressed("left")){
-		camera.rotation.y += 0.01;
-	}
-	if (keyboard.pressed("right")){
-		camera.rotation.y -= 0.01
-	}
+		if (keyboard.pressed("left")){
+			camera.rotation.y += 0.05;
+		}
+		if (keyboard.pressed("right")){
+			camera.rotation.y -= 0.05;
+		}
 
-	if (keyboard.pressed("up")){
-		camera.position.y += 0.1;
-	}
-	if (keyboard.pressed("down")){
-		camera.position.y -= 0.1
-	}
+		if (keyboard.pressed("up")){
+			camera.position.y += 0.5;
+		}
+		if (keyboard.pressed("down")){
+			camera.position.y -= 0.5;
+		}
 
-	if (keyboard.pressed("a")){
-		camera.position.x -= 0.1;
+		if (keyboard.pressed("a")){
+			camera.position.x -= 0.5;
+		}
+		if (keyboard.pressed("d")){
+			camera.position.x += 0.5;
+		}
+		GOL.updateGrid(2);
 	}
-	if (keyboard.pressed("d")){
-		camera.position.x += 0.1
-	}
-	GOL.updateGrid(3);
+	iter++;
+	// sleep?
 	setGrid();
 	renderer.render(scene, camera);
 };
@@ -75,16 +101,19 @@ var setupGrid = function(xSize, ySize, zSize) {
 
 
 
-GOL.setupBoolgrid(10, 10, 10, 0); // 3d bool array
 
-GOL.set(0, 0, 0, 1);
-GOL.set(0, 0, 1, 1);
-GOL.set(0, 1, 0, 1);
+GOL.setupBoolgrid(dim, dim, 1, 0); // 3d bool array
+
+GOL.set(2, 1, 0, 1);
+GOL.set(2, 2, 0, 1);
+GOL.set(2, 3, 0, 1);
+GOL.set(1, 3, 0, 1);
+GOL.set(0, 2, 0, 1);
+
+var grid = setupGrid(dim, dim, 1); // 3d grid of cubes
 
 
-var grid = setupGrid(10, 10, 10); // 3d grid of cubes
-
-var cubeGeometry = new THREE.CubeGeometry(0.5, 0.5, 0.5);
+var cubeGeometry = new THREE.CubeGeometry(sizeOfBox, sizeOfBox, sizeOfBox);
 var cubeMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
 
 
@@ -95,7 +124,7 @@ var keyboard = new THREEx.KeyboardState();
 var keyPress = false;
 camera.position.x = GOL.getGrid().length/2;
 camera.position.y = GOL.getGrid()[0].length/2;
-camera.position.z = GOL.getGrid()[0][0].length + 5;
+camera.position.z = GOL.getGrid()[0][0].length * 2 + 10;
 
 
 

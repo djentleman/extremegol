@@ -79,6 +79,16 @@ var render = function () {
 		}
 
 
+		if (keyboard.pressed("2")){
+			p = 2;
+			GOL.randomSeed(dim, dim, 1);
+		}
+		if (keyboard.pressed("3")){
+			p = 3;
+			GOL.randomSeed(dim, dim, dim);
+		}
+
+
 		if (keyboard.pressed("e")){
 			if (p == 2) {
 				GOL.randomSeed(dim, dim, 1);

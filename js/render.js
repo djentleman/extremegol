@@ -6,7 +6,7 @@ renderer.setSize(window.innerWidth - 10, window.innerHeight - 10);
 document.body.appendChild(renderer.domElement);
 var iter = 1;
 
-var delay = 100;
+var delay = 50;
 
 var p = 3; // dimension count;
 
@@ -76,6 +76,15 @@ var render = function () {
 		}
 		if (keyboard.pressed("d")){
 			camera.position.x += 0.5;
+		}
+
+
+		if (keyboard.pressed("e")){
+			if (p == 2) {
+				GOL.randomSeed(dim, dim, 1);
+			} else if (p == 3) {
+				GOL.randomSeed(dim, dim, dim);
+			}
 		}
 		GOL.updateGrid(p);
 	}

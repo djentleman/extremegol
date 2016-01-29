@@ -76,7 +76,7 @@ GOL.updateGrid = function(p) {
 				else {
 
 					if (golgrid[i][j][k]) {
-						if (currNeigh < 4 || currNeigh > 7) {
+						if (currNeigh < 4 || currNeigh > 8) {
 							//console.log('cell die')
 							newGrid[i][j][k] = 0;
 						}
@@ -87,7 +87,7 @@ GOL.updateGrid = function(p) {
 					}
 					else {
 						// cell dead
-						if (currNeigh == 8) {
+						if (currNeigh == 5) {
 							newGrid[i][j][k] = 1;
 						}
 					}

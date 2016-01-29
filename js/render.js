@@ -5,8 +5,9 @@ var renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth - 10, window.innerHeight - 10);
 document.body.appendChild(renderer.domElement);
 
-var setGrid = function(boolGrid) {
+var setGrid = function() {
 	// loop over 3d grid, set cubes
+	var boolGrid = GOL.getGrid();
 	for (var i = 0; i < boolGrid.length; i++) {
 		for (var j = 0; j < boolGrid[i].length; j++) {
 			for (var k = 0; k < boolGrid[i][j].length; k++) {
@@ -20,23 +21,30 @@ var setGrid = function(boolGrid) {
 			}
 		}
 	}
-	console.log(grid)
 };
 
 var render = function () {
 	requestAnimationFrame(render);
 	// handle keybaord events
-	if (keyboard.pressed("up")){
-		camera.position.z += 0.1;
-	}
-	if (keyboard.pressed("down")){
-		camera.position.z -= 0.1
-	}
-
 	if (keyboard.pressed("w")){
-		camera.position.y += 0.1;
+		camera.position.z -= 0.1;
 	}
 	if (keyboard.pressed("s")){
+		camera.position.z += 0.1
+	}
+
+
+	if (keyboard.pressed("left")){
+		camera.rotation.y += 0.01;
+	}
+	if (keyboard.pressed("right")){
+		camera.rotation.y -= 0.01
+	}
+
+	if (keyboard.pressed("up")){
+		camera.position.y += 0.1;
+	}
+	if (keyboard.pressed("down")){
 		camera.position.y -= 0.1
 	}
 
@@ -46,8 +54,8 @@ var render = function () {
 	if (keyboard.pressed("d")){
 		camera.position.x += 0.1
 	}
-	
-	setGrid(boolGrid);
+	GOL.updateGrid(3);
+	setGrid();
 	renderer.render(scene, camera);
 };
 
@@ -65,21 +73,16 @@ var setupGrid = function(xSize, ySize, zSize) {
 	return grid;
 };
 
-var boolGrid = 	[
-					[
-						[1, 1],
-						[1, 1],
-					],
-					[
-						[1, 1],
-						[1, 1],
-					],
-				];
 
 
-var grid = setupGrid(2, 2, 2); // 3d grid of cubes
+GOL.setupBoolgrid(10, 10, 10, 0); // 3d bool array
 
-console.log(JSON.stringify(grid));
+GOL.set(0, 0, 0, 1);
+GOL.set(0, 0, 1, 1);
+GOL.set(0, 1, 0, 1);
+
+
+var grid = setupGrid(10, 10, 10); // 3d grid of cubes
 
 var cubeGeometry = new THREE.CubeGeometry(0.5, 0.5, 0.5);
 var cubeMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
@@ -90,7 +93,9 @@ scene.add(ambientLight);
 
 var keyboard = new THREEx.KeyboardState();
 var keyPress = false;
-camera.position.z = 5;
+camera.position.x = GOL.getGrid().length/2;
+camera.position.y = GOL.getGrid()[0].length/2;
+camera.position.z = GOL.getGrid()[0][0].length + 5;
 
 
 

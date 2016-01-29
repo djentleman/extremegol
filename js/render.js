@@ -8,7 +8,7 @@ var iter = 1;
 
 var delay = 100;
 
-var p = 2; // dimension count;
+var p = 3; // dimension count;
 
 var dim = 20; // size of grid
 
@@ -77,7 +77,7 @@ var render = function () {
 		if (keyboard.pressed("d")){
 			camera.position.x += 0.5;
 		}
-		GOL.updateGrid(2);
+		GOL.updateGrid(p);
 	}
 	iter++;
 	// sleep?
@@ -101,16 +101,14 @@ var setupGrid = function(xSize, ySize, zSize) {
 
 
 
+if (p == 2) {
+	GOL.randomSeed(dim, dim, 1);
+	var grid = setupGrid(dim, dim, 1); // 3d grid of cubes
+} else if (p == 3) {
+	GOL.randomSeed(dim, dim, dim);
+	var grid = setupGrid(dim, dim, dim); // 3d grid of cubes
+}
 
-GOL.setupBoolgrid(dim, dim, 1, 0); // 3d bool array
-
-GOL.set(2, 1, 0, 1);
-GOL.set(2, 2, 0, 1);
-GOL.set(2, 3, 0, 1);
-GOL.set(1, 3, 0, 1);
-GOL.set(0, 2, 0, 1);
-
-var grid = setupGrid(dim, dim, 1); // 3d grid of cubes
 
 
 var cubeGeometry = new THREE.CubeGeometry(sizeOfBox, sizeOfBox, sizeOfBox);

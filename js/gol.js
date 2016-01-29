@@ -57,9 +57,6 @@ GOL.updateGrid = function(p) {
 
 
 					if (golgrid[i][j][k]) {
-						//console.log("alive");
-						//console.log(currNeigh);
-						// cell alive
 						if (currNeigh < 2 || currNeigh > 3) {
 							//console.log('cell die')
 							newGrid[i][j][k] = 0;
@@ -72,15 +69,28 @@ GOL.updateGrid = function(p) {
 					else {
 						// cell dead
 						if (currNeigh == 3) {
-
-							//console.log("dead");
-							//console.log(currNeigh);
-							//console.log('cell alive');
 							newGrid[i][j][k] = 1;
 						}
 					}
 				}
 				else {
+
+					if (golgrid[i][j][k]) {
+						if (currNeigh < 4 || currNeigh > 7) {
+							//console.log('cell die')
+							newGrid[i][j][k] = 0;
+						}
+						else {
+							newGrid[i][j][k] = 1;
+							//console.log('cell live')
+						}
+					}
+					else {
+						// cell dead
+						if (currNeigh == 8) {
+							newGrid[i][j][k] = 1;
+						}
+					}
 
 				}
 			}
@@ -110,3 +120,17 @@ GOL.set = function(x, y, z, val) {
 GOL.getGrid = function() {
 	return golgrid;
 }
+
+GOL.randomSeed = function(xSize, ySize, zSize) {
+	golgrid = [];
+	for (var i = 0; i < xSize; i++) {
+		golgrid.push([]);
+		for (var j = 0; j < ySize; j++) {
+			golgrid[i].push([]);
+			for (var k = 0; k < zSize; k++) {
+				golgrid[i][j].push(Math.floor(Math.random() * 2));
+			}
+		}
+	}
+	return golgrid;
+};
